@@ -1,0 +1,27 @@
+﻿
+@{
+    ViewBag.Title = "Teachers";
+}
+
+<div>
+    <form action="/Teacher/List" method="get">
+        <button type="submit">List All Teachers</button>
+    </form>
+</div>
+
+<h1>OR</h1>
+
+<div>
+    <form action="/Teacher/Search" method="post">
+        <label for="name">Name</label>
+        <input type="text" name="name" id="name" placeholder="Enter first name of a teacher"/>
+
+        <label for="hireDate">Hire Date</label>
+        <input type="date" name="hireDate" id="hireDate" value="" placeholder="Enter hire date" />
+
+        <label for="salary">Salary</label>
+        <input type="text" name="salary" id="salary" value="" placeholder="Enter salary" pattern="^\d+(\.\d{0,2})?$" />
+
+        <button type="submit">Search</button>
+    </form>
+</div>

@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using System.Xml.Linq;
 
 
 namespace backend_web_dev_assignment3.Controllers
@@ -17,6 +18,7 @@ namespace backend_web_dev_assignment3.Controllers
         }
 
         public ActionResult List() {
+            Console.WriteLine($"Inside List method");
             TeachersDataController controller = new TeachersDataController();
             List<Teacher> teachersList = controller.getAllTeachers();
 
@@ -28,6 +30,16 @@ namespace backend_web_dev_assignment3.Controllers
             Teacher teacher = controller.getTeacher(id);
 
             return View(teacher);
+        }
+
+        [HttpPost]
+        [Route("/Teacher/Search/")]
+        public ActionResult Search(string name, DateTime? hireDate, decimal? salary) {
+            Console.WriteLine($"Name - {name}");
+            Console.WriteLine($"hire date - {hireDate}");
+            Console.WriteLine($"salary - {salary}");
+
+            return View();
         }
     }
 }
