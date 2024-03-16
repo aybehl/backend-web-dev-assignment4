@@ -11,7 +11,7 @@ namespace backend_web_dev_assignment3.Models
         private static string User { get { return "root"; } }
         private static string Password { get { return "root"; } }
         private static string Database { get { return "school_database"; } }
-        private static string Server { get { return "root"; } }
+        private static string Server { get { return "localhost"; } }
         private static string Port { get { return "3306"; } }
 
         protected static string ConnectionString {
