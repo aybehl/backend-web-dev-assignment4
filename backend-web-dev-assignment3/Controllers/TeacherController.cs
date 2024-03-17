@@ -34,12 +34,11 @@ namespace backend_web_dev_assignment3.Controllers
 
         [HttpPost]
         [Route("/Teacher/Search/")]
-        public ActionResult Search(string name, DateTime? hireDate, decimal? salary) {
-            Console.WriteLine($"Name - {name}");
-            Console.WriteLine($"hire date - {hireDate}");
-            Console.WriteLine($"salary - {salary}");
+        public ActionResult Search(string name = null, DateTime? hireDate = null, decimal? salary = null) {
+            TeachersDataController controller = new TeachersDataController();
+            List<Teacher> teachers = controller.Search(name, hireDate, salary);
 
-            return View();
+            return View(teachers);
         }
     }
 }

@@ -2,6 +2,8 @@
 using MySql.Data.MySqlClient;
 using System;
 using System.Collections.Generic;
+using System.Data.SqlClient;
+using System.Data;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -14,7 +16,7 @@ namespace backend_web_dev_assignment3.Controllers
         private SchoolDbContext schoolDbContext = new SchoolDbContext();
 
         [HttpGet]
-        [Route("api/TeachersDataController/getAllTeachers")]
+        [Route("api/TeachersData/getAllTeachers")]
         public List<Teacher> getAllTeachers() {
             MySqlConnection conn = schoolDbContext.AccessDatabase();
             conn.Open();
@@ -54,7 +56,7 @@ namespace backend_web_dev_assignment3.Controllers
 
             Teacher teacher = new Teacher();
             while (reader.Read())
-            { 
+            {
                 teacher.teacherid = (int)reader["teacherid"];
                 teacher.teacherfname = (string)reader["teacherfname"];
                 teacher.teacherlname = (string)reader["teacherlname"];
@@ -68,35 +70,66 @@ namespace backend_web_dev_assignment3.Controllers
             return teacher;
         }
 
+        // GET: api/teachers/search?name={name}&hireDate={hireDate}&salary={salary}
         [HttpGet]
-        [Route("api/TeachersDataController/searchTeachers")]
-        public List<Teacher> searchTeachers(string name = null, string hireDate = null, string salary = null)
+        [Route("api/teachersData/search")]
+        public List<Teacher> Search(string name = null, DateTime? hireDate = null, decimal? salary = null)
         {
-            MySqlConnection conn = schoolDbContext.AccessDatabase();
-            conn.Open();
-            MySqlCommand command = conn.CreateCommand();
-            string query = "SELECT * FROM teachers WHERE 1=1";
-            if (!string.IsNullOrEmpty(name)) {
-                query += $" AND teacherfname LIKE '%{name}%'";
-            }
+            // Initialize a list to store the search results
+            List<Teacher> teachers = new List<Teacher>();
 
-            if (!string.IsNullOrEmpty(hireDate))
+            if (name == null && hireDate == null && salary == null)
             {
-                //DateTime parsedHireDate = DateTime.Parse(hireDate + " 00:00:00");
-
-                query += $" AND hiredate = {hireDate} 00:00:00";
+                return teachers;
             }
 
-            if (!string.IsNullOrEmpty(salary))
+            // Construct the SQL query
+            string query = "SELECT * FROM Teachers WHERE 1 = 1";
+
+            // Create a MySqlCommand object
+            MySqlConnection connection = schoolDbContext.AccessDatabase();
+            
+            MySqlCommand command = new MySqlCommand(query, connection);
+
+            // Check if name parameter is provided
+            if (!string.IsNullOrEmpty(name))
             {
-                query += $" AND salary = {salary}";
+                // Append name condition to the query
+                query += " AND teacherfname LIKE @Name";
+
+                // Create a parameter for name to prevent SQL injection
+                command.Parameters.AddWithValue("@Name", "%" + name + "%");
             }
 
+            // Check if hireDate parameter is provided
+            if (hireDate.HasValue)
+            {
+                // Format hireDate parameter to match SQL datetime format
+                string formattedHireDate = hireDate.Value.ToString("yyyy-MM-dd HH:mm:ss");
+
+                // Append hireDate condition to the query
+                query += " AND hiredate = @HireDate";
+
+                // Create a parameter for hireDate to prevent SQL injection
+                command.Parameters.AddWithValue("@HireDate", formattedHireDate);
+            }
+
+            // Check if salary parameter is provided
+            if (salary.HasValue)
+            {
+                // Append salary condition to the query
+                query += " AND salary = @Salary";
+
+                // Create a parameter for salary to prevent SQL injection
+                command.Parameters.AddWithValue("@Salary", salary.Value);
+            }
+
+            // Set the updated query to the MySqlCommand object
             command.CommandText = query;
 
+            // Execute the query and retrieve the results
+            connection.Open();
             MySqlDataReader reader = command.ExecuteReader();
-
-            List<Teacher> teachersList = new List<Teacher>();
             while (reader.Read())
             {
                 Teacher teacher = new Teacher();
@@ -106,21 +139,12 @@ namespace backend_web_dev_assignment3.Controllers
                 teacher.employeenumber = (string)reader["employeenumber"];
                 teacher.salary = (decimal)reader["salary"];
                 teacher.hiredate = (DateTime)reader["hiredate"];
-                teachersList.Add(teacher);
+                teachers.Add(teacher);
             }
 
-            conn.Close();
-
-            return teachersList;
+            connection.Close();
+            // Return the list of teachers
+            return teachers;
         }
-
-        [HttpGet]
-        [Route("api/TeachersDataController/search/{name?}/{hireDate?}/{salary?}")]
-        public string search(string name = null, string hireDate = null, string salary = null)
-        {
-            return $"{name} {hireDate} {salary}";
-        }
-
-
     }
 }
