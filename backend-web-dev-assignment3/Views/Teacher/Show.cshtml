@@ -4,6 +4,14 @@
     ViewBag.Title = "Teacher Details";
 }
 
-<h2>Teacher Details for teacher id - @Model.teacherid</h2>
-<p>@Model.teacherfname @Model.teacherfname</p>
+<h2>Teacher Details</h2>
+
+<div>
+    <div><span class="propertyName">Full Name - </span>@Model.teacherfname @Model.teacherfname</div>
+    <div><span class="propertyName">Teacher ID - </span>@Model.teacherid</div>
+    <div><span class="propertyName">Employee Number - </span>@Model.employeenumber</div>
+    <div><span class="propertyName">Hire Date - </span>@Model.hiredate</div>
+    <div><span class="propertyName">Salary - </span>@Model.salary</div>
+</div>
+
 

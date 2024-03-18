@@ -11,20 +11,21 @@ namespace backend_web_dev_assignment3.Controllers
 {
     public class TeacherController : Controller
     {
-        // GET: Teacher
+        // GET: Teacher Or Teacher/Index
         public ActionResult Index()
         {
             return View();
         }
 
+        // GET: Teacher/List
         public ActionResult List() {
-            Console.WriteLine($"Inside List method");
             TeachersDataController controller = new TeachersDataController();
             List<Teacher> teachersList = controller.getAllTeachers();
 
             return View(teachersList);
         }
 
+        // GET: Teacher/Show/{id}
         public ActionResult Show(int id) {
             TeachersDataController controller = new TeachersDataController();
             Teacher teacher = controller.getTeacher(id);
@@ -32,11 +33,11 @@ namespace backend_web_dev_assignment3.Controllers
             return View(teacher);
         }
 
+        // GET: Teacher/Search
         [HttpPost]
-        [Route("/Teacher/Search/")]
         public ActionResult Search(string name = null, DateTime? hireDate = null, decimal? salary = null) {
             TeachersDataController controller = new TeachersDataController();
-            List<Teacher> teachers = controller.Search(name, hireDate, salary);
+            List<Teacher> teachers = controller.searchTeachers(name, hireDate, salary);
 
             return View(teachers);
         }

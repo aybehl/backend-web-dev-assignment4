@@ -15,6 +15,13 @@ namespace backend_web_dev_assignment3.Controllers
     {
         private SchoolDbContext schoolDbContext = new SchoolDbContext();
 
+        /// <summary>
+        /// This method will access the School database to get all the teachers details from the Teachers table
+        /// </summary>
+        /// <example>
+        /// GET api/TeachersData/getAllTeachers -> List of Teachers
+        /// </example>
+        /// <returns>A list of teacher Objects</returns>
         [HttpGet]
         [Route("api/TeachersData/getAllTeachers")]
         public List<Teacher> getAllTeachers() {
@@ -43,8 +50,16 @@ namespace backend_web_dev_assignment3.Controllers
             return teachersList;
         }
 
+        /// <summary>
+        /// This method will find a teacher given a teacher id from the Teachers table
+        /// </summary>
+        /// <param name="teacherid">The teacher primary key</param>
+        /// <example>
+        /// GET /api/TeachersData/getTeacher/1 -> returns Teacher with teacherid 1
+        /// </example>
+        /// <returns>A Teacher Object</returns>
         [HttpGet]
-        [Route("api/TeachersDataController/getTeacher/{teacherid}")]
+        [Route("api/TeachersData/getTeacher/{teacherid}")]
         public Teacher getTeacher(int teacherid)
         {
             MySqlConnection conn = schoolDbContext.AccessDatabase();
@@ -71,14 +86,27 @@ namespace backend_web_dev_assignment3.Controllers
         }
 
         // GET: api/teachers/search?name={name}&hireDate={hireDate}&salary={salary}
+        /// <summary>
+        /// This method will search for teachers that match the parameters - first name, hire date and salary
+        /// If all of these parameters are null, then no results are found.
+        /// If any of these parameters are not null, then the DB is queried to find an exact match
+        /// with that parameter
+        /// </summary>
+        /// <param name="name">The first name of teacher</param>
+        /// <param name="hireDate">Hire Date of teacher</param>
+        /// <param name="salary">Salary of teacher</param>
+        /// <example>
+        /// GET api/teachers/search?name={name}&hireDate={hireDate}&salary={salary} -> returns all teachers that match the parameters
+        /// </example>
+        /// <returns>List of teacher objects</returns>
         [HttpGet]
         [Route("api/teachersData/search")]
-        public List<Teacher> Search(string name = null, DateTime? hireDate = null, decimal? salary = null)
+        public List<Teacher> searchTeachers(string name = null, DateTime? hireDate = null, decimal? salary = null)
         {
             // Initialize a list to store the search results
             List<Teacher> teachers = new List<Teacher>();
 
-            if (name == null && hireDate == null && salary == null)
+            if ((name == null || name == "") && hireDate == null && salary == null)
             {
                 return teachers;
             }
@@ -143,6 +171,7 @@ namespace backend_web_dev_assignment3.Controllers
             }
 
             connection.Close();
+
             // Return the list of teachers
             return teachers;
         }

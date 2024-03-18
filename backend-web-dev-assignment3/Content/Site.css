@@ -11,3 +11,51 @@ select,
 textarea {
     max-width: 280px;
 }
+
+.backToPage {
+    text-align: right;
+    float: right;
+}
+
+.propertyName {
+    font-weight: bold;
+    color: darkslateblue;
+}
+
+.noResults {
+    font-weight: bold;
+    color: darkred;
+    font-size: 2em;
+}
+
+.button {
+    background-color: dimgray;
+    color: white;
+    padding: 5px 10px;
+    border: 1px solid black;
+    border-radius: 4px;
+}
+
+a.button {
+    text-decoration: none;
+}
+
+.moveRight {
+    float: right;
+    position: absolute;
+    top: 80px;
+    right: 48px;
+}
+
+.labelWithInput {
+    margin-bottom: 8px;
+}
+
+input[type="text"], input[type="date"] {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+
