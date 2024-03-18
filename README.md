@@ -1,4 +1,4 @@
-# Project Name
+# Assignment 3
 
 ## Overview
 
@@ -35,4 +35,4 @@ This API controller has the below listed methods :-
 - **Search.cshtml:** Shows either a List of teachers as a result of the search query or shows no results. 
 
 ## Flow Diagram
-![All the flows](/diagram/Assignment3-C#.png)
+[Link to Diagram](https://drive.google.com/file/d/1SkPpPELAdvndlSik3-HzwUX96NMBiMnF/view?usp=sharing)
