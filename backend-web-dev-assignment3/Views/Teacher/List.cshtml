@@ -4,12 +4,19 @@
     ViewBag.Title = "Teachers List";
 }
 
-<h2>Teachers List</h2>
-<p>This page should be showing information about all authors</p>
+<div class="moveRight">
+    <span>To Add a New Teacher</span>
+    <a href="/Teacher/New" class="button">Click</a>
+</div>
 
 <div class="container">
     <h2>List of Teachers</h2>
-    @foreach (var teacher in Model) {
+    <form action="/Teacher/List" method="GET">
+        <input type="text" name="name" placeholder="Enter name of teacher"/>
+        <input type="submit" value="Search" />
+    </form>
+    @foreach (var teacher in Model)
+    {
         <div class="row">
             <div>
                 <a href="/Teacher/Show/@teacher.teacherid">@teacher.teacherfname @teacher.teacherlname</a>

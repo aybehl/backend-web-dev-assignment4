@@ -23,13 +23,17 @@ namespace backend_web_dev_assignment3.Controllers
         /// </example>
         /// <returns>A list of teacher Objects</returns>
         [HttpGet]
-        [Route("api/TeachersData/getAllTeachers")]
-        public List<Teacher> getAllTeachers() {
+        [Route("api/TeachersData/getAllTeachers/{name?}")]
+        public List<Teacher> getAllTeachers(string name = null) {
             MySqlConnection conn = schoolDbContext.AccessDatabase();
             conn.Open();
             MySqlCommand command = conn.CreateCommand();
-            command.CommandText = "Select * from Teachers";
+            //command.CommandText = "Select * from Teachers";
 
+            //SQL QUERY
+            command.CommandText = "SELECT * FROM Teachers WHERE lower(teacherfname) LIKE lower(@key) OR lower(teacherlname) LIKE lower(@key) OR lower(concat(teacherfname, ' ', teacherlname)) LIKE lower(@key)";
+
+            command.Parameters.AddWithValue("@key", "%" + name + "%");
             MySqlDataReader reader = command.ExecuteReader();
 
             List<Teacher> teachersList = new List<Teacher>();
@@ -123,7 +127,7 @@ namespace backend_web_dev_assignment3.Controllers
             if (!string.IsNullOrEmpty(name))
             {
                 // Append name condition to the query
-                query += " AND teacherfname LIKE @Name";
+                query += " AND lower(teacherfname) LIKE lower(@Name) OR lower(teacherlname) LIKE lower(@Name) OR lower(concat(teacherfname, ' ', teacherlname)) LIKE lower(@Name)";
 
                 // Create a parameter for name to prevent SQL injection
                 command.Parameters.AddWithValue("@Name", "%" + name + "%");
@@ -136,7 +140,7 @@ namespace backend_web_dev_assignment3.Controllers
                 string formattedHireDate = hireDate.Value.ToString("yyyy-MM-dd HH:mm:ss");
 
                 // Append hireDate condition to the query
-                query += " AND hiredate = @HireDate";
+                query += " AND hiredate >= @HireDate";
 
                 // Create a parameter for hireDate to prevent SQL injection
                 command.Parameters.AddWithValue("@HireDate", formattedHireDate);
@@ -146,7 +150,7 @@ namespace backend_web_dev_assignment3.Controllers
             if (salary.HasValue)
             {
                 // Append salary condition to the query
-                query += " AND salary = @Salary";
+                query += " AND salary >= @Salary";
 
                 // Create a parameter for salary to prevent SQL injection
                 command.Parameters.AddWithValue("@Salary", salary.Value);
@@ -174,6 +178,39 @@ namespace backend_web_dev_assignment3.Controllers
 
             // Return the list of teachers
             return teachers;
+        }
+
+        [HttpPost]
+        [Route("api/teachersData/addNewTeacher")]
+        public void addNewTeacher([FromBody]Teacher newTeacher) {
+            MySqlConnection Conn = schoolDbContext.AccessDatabase();
+            Conn.Open();
+
+            MySqlCommand cmd = Conn.CreateCommand();
+            cmd.CommandText = "INSERT into Teachers (teacherfname, teacherlname, employeenumber, hiredate, salary) VALUES (@firstName, @lastName, @employeeNumber, @hireDate, @salary)";
+            cmd.Parameters.AddWithValue("@firstName", newTeacher.teacherfname);
+            cmd.Parameters.AddWithValue("@lastName", newTeacher.teacherlname);
+            cmd.Parameters.AddWithValue("@employeeNumber", newTeacher.employeenumber);
+            cmd.Parameters.AddWithValue("@hireDate", newTeacher.hiredate);
+            cmd.Parameters.AddWithValue("@salary", newTeacher.salary);
+
+            cmd.ExecuteNonQuery();
+            Conn.Close();
+        }
+
+        [HttpPost]
+        [Route("api/teachersData/deleteTeacher")]
+        public void deleteTeacher(int id)
+        {
+            MySqlConnection Conn = schoolDbContext.AccessDatabase();
+            Conn.Open();
+
+            MySqlCommand cmd = Conn.CreateCommand();
+            cmd.CommandText = "DELETE from Teachers where teacherid=@id";
+            cmd.Parameters.AddWithValue("@id", id);
+
+            cmd.ExecuteNonQuery();
+            Conn.Close();
         }
     }
 }

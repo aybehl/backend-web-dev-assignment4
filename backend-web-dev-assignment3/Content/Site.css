@@ -58,4 +58,34 @@ input[type="text"], input[type="date"] {
     border-radius: 4px;
 }
 
+.alert {
+    color: #890000;
+    font-weight: bold;
+    padding-left: 0;
+}
 
+.cancelButton {
+    background-color: #F0544F;
+    color: #890000;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.confirmButton {
+    background-color: #7CAE7A;
+    color: #233423;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+a {
+    text-decoration: none;
+}
+
+.buttonContainer {
+    display: flex;
+    column-gap: 8px;
+    align-items: center;
+}

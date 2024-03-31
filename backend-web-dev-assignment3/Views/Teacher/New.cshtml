@@ -1,0 +1,43 @@
+﻿
+@{
+    ViewBag.Title = "Add";
+}
+
+<div class="moveRight">
+    <span>To See All Teachers</span>
+    <a href="/Teacher/List" class="button">Click</a>
+</div>
+
+<h2>Add a Teacher</h2>
+<div>
+    <form action="/Teacher/Create" method="POST">
+        <div class="labelWithInput">
+            <label for="firstName" class="propertyName">First Name</label>
+            <input type="text" name="firstName" id="firstName" placeholder="Enter first name" />
+        </div>
+
+        <div class="labelWithInput">
+            <label for="lastName" class="propertyName">Last Name</label>
+            <input type="text" name="lastName" id="lastName" placeholder="Enter last name" />
+        </div>
+
+        <div class="labelWithInput">
+            <label for="hireDate" class="propertyName">Hire Date</label>
+            <input type="date" name="hireDate" id="hireDate" value="" placeholder="Enter hire date" />
+        </div>
+
+        <div class="labelWithInput">
+            <label for="employeeNumber" class="propertyName">Employee Number</label>
+            <input type="text" name="employeeNumber" id="employeeNumber" value="" placeholder="Enter employee number" pattern="^\d+(\.\d{0,2})?$" />
+        </div>
+
+        <div class="labelWithInput">
+            <label for="salary" class="propertyName">Salary</label>
+            <input type="text" name="salary" id="salary" value="" placeholder="Enter salary" pattern="^\d+(\.\d{0,2})?$" />
+        </div>
+
+        <button type="submit" class="button">Add</button>
+    </form>
+</div>
+
+

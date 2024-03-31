@@ -1,0 +1,18 @@
+﻿@model backend_web_dev_assignment3.Models.Teacher
+
+@{
+    ViewBag.Title = "ConfirmDelete";
+}
+
+<h2>Are you sure you want to delete @Model.teacherfname @Model.teacherlname?</h2>
+
+<p class="alert">This action cannot be undone</p>
+
+<div class="buttonContainer">
+    <a href="/Teacher/Show/@Model.teacherid" class="cancelButton">Cancel</a>
+    <form action="/Teacher/Delete/@Model.teacherid" method="post">
+        <button class="confirmButton">Confirm Delete</button>
+    </form>
+</div>
+
+

@@ -4,10 +4,15 @@
     ViewBag.Title = "Teacher Details";
 }
 
+<div class="moveRight">
+    <span>Delete this Teacher</span>
+    <a href="/Teacher/ConfirmDelete/@Model.teacherid" class="button">Click</a>
+</div>
+
 <h2>Teacher Details</h2>
 
 <div>
-    <div><span class="propertyName">Full Name - </span>@Model.teacherfname @Model.teacherfname</div>
+    <div><span class="propertyName">Full Name - </span>@Model.teacherfname @Model.teacherlname</div>
     <div><span class="propertyName">Teacher ID - </span>@Model.teacherid</div>
     <div><span class="propertyName">Employee Number - </span>@Model.employeenumber</div>
     <div><span class="propertyName">Hire Date - </span>@Model.hiredate</div>
