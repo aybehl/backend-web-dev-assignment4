@@ -24,7 +24,7 @@ namespace backend_web_dev_assignment3.Controllers
         /// <returns>A list of teacher Objects</returns>
         [HttpGet]
         [Route("api/TeachersData/getAllTeachers/{name?}")]
-        public List<Teacher> getAllTeachers(string name = null) {
+        public List<Teacher> GetAllTeachers(string name = null) {
             MySqlConnection conn = schoolDbContext.AccessDatabase();
             conn.Open();
             MySqlCommand command = conn.CreateCommand();
@@ -64,7 +64,7 @@ namespace backend_web_dev_assignment3.Controllers
         /// <returns>A Teacher Object</returns>
         [HttpGet]
         [Route("api/TeachersData/getTeacher/{teacherid}")]
-        public Teacher getTeacher(int teacherid)
+        public Teacher GetTeacher(int teacherid)
         {
             MySqlConnection conn = schoolDbContext.AccessDatabase();
             conn.Open();
@@ -105,7 +105,7 @@ namespace backend_web_dev_assignment3.Controllers
         /// <returns>List of teacher objects</returns>
         [HttpGet]
         [Route("api/teachersData/search")]
-        public List<Teacher> searchTeachers(string name = null, DateTime? hireDate = null, decimal? salary = null)
+        public List<Teacher> SearchTeachers(string name = null, DateTime? hireDate = null, decimal? salary = null)
         {
             // Initialize a list to store the search results
             List<Teacher> teachers = new List<Teacher>();
@@ -182,7 +182,7 @@ namespace backend_web_dev_assignment3.Controllers
 
         [HttpPost]
         [Route("api/teachersData/addNewTeacher")]
-        public void addNewTeacher([FromBody]Teacher newTeacher) {
+        public void AddNewTeacher([FromBody]Teacher newTeacher) {
             MySqlConnection Conn = schoolDbContext.AccessDatabase();
             Conn.Open();
 
@@ -200,17 +200,31 @@ namespace backend_web_dev_assignment3.Controllers
 
         [HttpPost]
         [Route("api/teachersData/deleteTeacher")]
-        public void deleteTeacher(int id)
+        public void DeleteTeacher(int id)
         {
             MySqlConnection Conn = schoolDbContext.AccessDatabase();
             Conn.Open();
 
-            MySqlCommand cmd = Conn.CreateCommand();
-            cmd.CommandText = "DELETE from Teachers where teacherid=@id";
-            cmd.Parameters.AddWithValue("@id", id);
+            var transaction = Conn.BeginTransaction();
+            try
+            {
+                MySqlCommand updateCmd = Conn.CreateCommand();
+                updateCmd.CommandText = "UPDATE classes SET teacherid = NULL WHERE teacherid = @id";
+                updateCmd.Parameters.AddWithValue("@id", id);
+                updateCmd.ExecuteNonQuery();
 
-            cmd.ExecuteNonQuery();
-            Conn.Close();
+                MySqlCommand deleteCmd = Conn.CreateCommand();
+                deleteCmd.CommandText = "DELETE from Teachers where teacherid=@id";
+                deleteCmd.Parameters.AddWithValue("@id", id);
+                deleteCmd.ExecuteNonQuery();
+               
+                transaction.Commit();
+                Conn.Close();
+            }
+            catch(Exception ex) {
+                transaction.Rollback();
+            }
+            
         }
     }
 }

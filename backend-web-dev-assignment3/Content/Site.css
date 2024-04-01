@@ -89,3 +89,10 @@ a {
     column-gap: 8px;
     align-items: center;
 }
+
+.linksContainer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+}

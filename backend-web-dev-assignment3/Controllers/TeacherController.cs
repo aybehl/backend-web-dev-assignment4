@@ -20,7 +20,7 @@ namespace backend_web_dev_assignment3.Controllers
         // GET: Teacher/List
         public ActionResult List(string name = null) {
             TeachersDataController controller = new TeachersDataController();
-            List<Teacher> teachersList = controller.getAllTeachers(name);
+            List<Teacher> teachersList = controller.GetAllTeachers(name);
 
             return View(teachersList);
         }
@@ -28,7 +28,7 @@ namespace backend_web_dev_assignment3.Controllers
         // GET: Teacher/Show/{id}
         public ActionResult Show(int id) {
             TeachersDataController controller = new TeachersDataController();
-            Teacher teacher = controller.getTeacher(id);
+            Teacher teacher = controller.GetTeacher(id);
 
             return View(teacher);
         }
@@ -36,7 +36,7 @@ namespace backend_web_dev_assignment3.Controllers
         // GET: Teacher/Search
         public ActionResult Search(string name = null, DateTime? hireDate = null, decimal? salary = null) {
             TeachersDataController controller = new TeachersDataController();
-            List<Teacher> teachers = controller.searchTeachers(name, hireDate, salary);
+            List<Teacher> teachers = controller.SearchTeachers(name, hireDate, salary);
 
             return View(teachers);
         }
@@ -48,17 +48,17 @@ namespace backend_web_dev_assignment3.Controllers
 
         // POST: Teacher/Create
         [HttpPost]
-        public ActionResult Create(string firstName, string lastName, string employeeNumber, DateTime hireDate, decimal salary)
+        public ActionResult Create(string firstName, string lastName, string employeeNumber, decimal salary, DateTime? hireDate = null)
         {
             Teacher newTeacher = new Teacher();
             newTeacher.teacherfname = firstName;
             newTeacher.teacherlname = lastName;
             newTeacher.employeenumber = employeeNumber;
-            newTeacher.hiredate = hireDate;
+            newTeacher.hiredate = hireDate ?? DateTime.Now;
             newTeacher.salary = salary;
 
             TeachersDataController controller = new TeachersDataController();
-            controller.addNewTeacher(newTeacher);
+            controller.AddNewTeacher(newTeacher);
 
             return RedirectToAction("List");
         }
@@ -66,7 +66,7 @@ namespace backend_web_dev_assignment3.Controllers
         //GET: /Teacher/ConfirmDelete/{id}
         public ActionResult ConfirmDelete(int id) {
             TeachersDataController controller = new TeachersDataController();
-            Teacher teacherToDelete = controller.getTeacher(id);
+            Teacher teacherToDelete = controller.GetTeacher(id);
             return View(teacherToDelete);
         }
 
@@ -75,7 +75,7 @@ namespace backend_web_dev_assignment3.Controllers
         public ActionResult Delete(int id)
         {
             TeachersDataController controller = new TeachersDataController();
-            controller.deleteTeacher(id);
+            controller.DeleteTeacher(id);
 
             return RedirectToAction("List");
         }

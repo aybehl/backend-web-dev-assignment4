@@ -4,10 +4,18 @@
     ViewBag.Title = "Teacher Details";
 }
 
-<div class="moveRight">
-    <span>Delete this Teacher</span>
-    <a href="/Teacher/ConfirmDelete/@Model.teacherid" class="button">Click</a>
+<div class="linksContainer">
+    <div>
+        <span>To See All Teachers</span>
+        <a href="/Teacher/List" class="button">Click</a>
+    </div>
+
+    <div>
+        <span>Delete this Teacher</span>
+        <a href="/Teacher/ConfirmDelete/@Model.teacherid" class="button">Click</a>
+    </div>
 </div>
+
 
 <h2>Teacher Details</h2>
 
