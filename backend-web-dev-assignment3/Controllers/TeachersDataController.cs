@@ -8,6 +8,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
+using System.Web.Http.Cors;
 
 namespace backend_web_dev_assignment3.Controllers
 {
@@ -182,20 +183,33 @@ namespace backend_web_dev_assignment3.Controllers
 
         [HttpPost]
         [Route("api/teachersData/addNewTeacher")]
-        public void AddNewTeacher([FromBody]Teacher newTeacher) {
-            MySqlConnection Conn = schoolDbContext.AccessDatabase();
-            Conn.Open();
+        [EnableCors(origins: "*", methods: "*", headers: "*")]
+        public IHttpActionResult AddNewTeacher([FromBody]Teacher newTeacher) {
+            if (newTeacher == null) {
+                return BadRequest("Invalid input in the body for post request");
+            }
 
-            MySqlCommand cmd = Conn.CreateCommand();
-            cmd.CommandText = "INSERT into Teachers (teacherfname, teacherlname, employeenumber, hiredate, salary) VALUES (@firstName, @lastName, @employeeNumber, @hireDate, @salary)";
-            cmd.Parameters.AddWithValue("@firstName", newTeacher.teacherfname);
-            cmd.Parameters.AddWithValue("@lastName", newTeacher.teacherlname);
-            cmd.Parameters.AddWithValue("@employeeNumber", newTeacher.employeenumber);
-            cmd.Parameters.AddWithValue("@hireDate", newTeacher.hiredate);
-            cmd.Parameters.AddWithValue("@salary", newTeacher.salary);
+            try
+            {
+                MySqlConnection Conn = schoolDbContext.AccessDatabase();
+                Conn.Open();
 
-            cmd.ExecuteNonQuery();
-            Conn.Close();
+                MySqlCommand cmd = Conn.CreateCommand();
+                cmd.CommandText = "INSERT into Teachers (teacherfname, teacherlname, employeenumber, hiredate, salary) VALUES (@firstName, @lastName, @employeeNumber, @hireDate, @salary)";
+                cmd.Parameters.AddWithValue("@firstName", newTeacher.teacherfname);
+                cmd.Parameters.AddWithValue("@lastName", newTeacher.teacherlname);
+                cmd.Parameters.AddWithValue("@employeeNumber", newTeacher.employeenumber);
+                cmd.Parameters.AddWithValue("@hireDate", newTeacher.hiredate);
+                cmd.Parameters.AddWithValue("@salary", newTeacher.salary);
+
+                cmd.ExecuteNonQuery();
+                Conn.Close();
+
+                return Ok(new { message = "Teacher added successfully" });
+            }
+            catch (Exception ex) {
+                return InternalServerError(ex);
+            }
         }
 
         [HttpPost]
