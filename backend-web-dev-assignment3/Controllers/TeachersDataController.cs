@@ -18,9 +18,10 @@ namespace backend_web_dev_assignment3.Controllers
 
         /// <summary>
         /// This method will access the School database to get all the teachers details from the Teachers table
+        /// An optional string 'name' can be used to filter the search result
         /// </summary>
         /// <example>
-        /// GET api/TeachersData/getAllTeachers -> List of Teachers
+        /// GET api/TeachersData/getAllTeachers -> [{"employeenumber": "T378", "hiredate": "2016-08-05T00:00:00", "salary": "55.30", "teacherfname": "Alexander", "teacherid": 1, "teacherlname": "Bennett"}]
         /// </example>
         /// <returns>A list of teacher Objects</returns>
         [HttpGet]
@@ -92,14 +93,15 @@ namespace backend_web_dev_assignment3.Controllers
 
         // GET: api/teachers/search?name={name}&hireDate={hireDate}&salary={salary}
         /// <summary>
-        /// This method will search for teachers that match the parameters - first name, hire date and salary
+        /// This method will search for teachers that match the parameters - 
+        /// name, hire date greater than the entered hire date and salary greater than the entered salary
         /// If all of these parameters are null, then no results are found.
-        /// If any of these parameters are not null, then the DB is queried to find an exact match
+        /// If any of these parameters are not null, then the DB is queried to find a match
         /// with that parameter
         /// </summary>
-        /// <param name="name">The first name of teacher</param>
-        /// <param name="hireDate">Hire Date of teacher</param>
-        /// <param name="salary">Salary of teacher</param>
+        /// <param name="name">The name of teacher</param>
+        /// <param name="hireDate">Hire Date</param>
+        /// <param name="salary">Salary</param>
         /// <example>
         /// GET api/teachers/search?name={name}&hireDate={hireDate}&salary={salary} -> returns all teachers that match the parameters
         /// </example>
@@ -181,6 +183,16 @@ namespace backend_web_dev_assignment3.Controllers
             return teachers;
         }
 
+        /// <summary>
+        /// This method will add a new teacher given as parameter the Teacher object
+        /// </summary>
+        /// <param name="newTeacher">Teacher Object containing all attributes in the Teacher model</param>
+        /// <example>
+        /// POST /api/TeachersData/addNewTeacher/ [Body - {"employeenumber": "T378", "hiredate": "2016-08-05T00:00:00", 
+        /// "salary": "55.30", "teacherfname": "Alexander", "teacherid": 1, "teacherlname": "Bennett"}] -> This adds a new 
+        /// teacher with the data from the body of the request to the Teachers Table
+        /// </example>
+        /// <returns>Status 200, if action is successful otherwise Internal Server Error - 500</returns>
         [HttpPost]
         [Route("api/teachersData/addNewTeacher")]
         [EnableCors(origins: "*", methods: "*", headers: "*")]
@@ -212,6 +224,15 @@ namespace backend_web_dev_assignment3.Controllers
             }
         }
 
+        /// <summary>
+        /// This method will delete a teacher from the Teachers Table, given a teacher id
+        /// Additionally, it makes the teacherid as NULL for all classes that have this teacher as a reference
+        /// </summary>
+        /// <param name="id">Teacher id</param>
+        /// <example>
+        /// POST /api/TeachersData/deleteTeacher/ Body - [1] -> Deletes teacher data for teacherid 1 and updates the classes table with teacherid as NULL, which contains this teacherid
+        /// </example>
+        /// <returns>void</returns>
         [HttpPost]
         [Route("api/teachersData/deleteTeacher")]
         public void DeleteTeacher(int id)

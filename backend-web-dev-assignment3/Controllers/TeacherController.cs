@@ -51,28 +51,9 @@ namespace backend_web_dev_assignment3.Controllers
         [HttpPost]
         public ActionResult Create(TeacherViewModel model)
         {
-           /* // Check for required fields
-            if (string.IsNullOrWhiteSpace(firstName))
-            {
-                ModelState.AddModelError("firstName", "Name is required.");
-            }
-
-            if (string.IsNullOrWhiteSpace(lastName))
-            {
-                ModelState.AddModelError("lastName", "Last Name is required.");
-            }
-
-            if (string.IsNullOrWhiteSpace(employeeNumber))
-            {
-                ModelState.AddModelError("employeeNumber", "Employee Number is required.");
-            }*/
-
-            // Additional validation logic can be added here
-
             // Check if ModelState is valid
             if (!ModelState.IsValid)
             {
-                // Return to the view with the current ModelState (which includes errors)
                 return View("New", model);
             }
 
