@@ -44,7 +44,7 @@ namespace backend_web_dev_assignment3.Controllers
                 teacher.teacherfname = (string)reader["teacherfname"];
                 teacher.teacherlname = (string)reader["teacherlname"];
                 teacher.employeenumber = (string)reader["employeenumber"];
-                teacher.salary = (decimal)reader["salary"];
+                teacher.salary = Convert.IsDBNull(reader["salary"]) ? (decimal?)null : Convert.ToDecimal(reader["salary"]);
                 teacher.hiredate = (DateTime)reader["hiredate"];
                 teachersList.Add(teacher);
             }
@@ -80,7 +80,7 @@ namespace backend_web_dev_assignment3.Controllers
                 teacher.teacherfname = (string)reader["teacherfname"];
                 teacher.teacherlname = (string)reader["teacherlname"];
                 teacher.employeenumber = (string)reader["employeenumber"];
-                teacher.salary = (decimal)reader["salary"];
+                teacher.salary = Convert.IsDBNull(reader["salary"]) ? (decimal?)null : Convert.ToDecimal(reader["salary"]);
                 teacher.hiredate = (DateTime)reader["hiredate"];
             }
 
@@ -169,7 +169,7 @@ namespace backend_web_dev_assignment3.Controllers
                 teacher.teacherfname = (string)reader["teacherfname"];
                 teacher.teacherlname = (string)reader["teacherlname"];
                 teacher.employeenumber = (string)reader["employeenumber"];
-                teacher.salary = (decimal)reader["salary"];
+                teacher.salary = Convert.IsDBNull(reader["salary"]) ? (decimal?)null : Convert.ToDecimal(reader["salary"]);
                 teacher.hiredate = (DateTime)reader["hiredate"];
                 teachers.Add(teacher);
             }

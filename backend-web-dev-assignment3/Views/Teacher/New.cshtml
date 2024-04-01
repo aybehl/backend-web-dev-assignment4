@@ -1,4 +1,5 @@
-﻿
+﻿@model backend_web_dev_assignment3.ViewModels.TeacherViewModel
+
 @{
     ViewBag.Title = "Add";
 }
@@ -14,11 +15,13 @@
         <div class="labelWithInput">
             <label for="firstName" class="propertyName">First Name</label>
             <input type="text" name="firstName" id="firstName" placeholder="Enter first name" required/>
+            @Html.ValidationMessageFor(model => model.firstName)
         </div>
 
         <div class="labelWithInput">
             <label for="lastName" class="propertyName">Last Name</label>
-            <input type="text" name="lastName" id="lastName" placeholder="Enter last name" required/>
+            <input type="text" name="lastName" id="lastName" placeholder="Enter last name" required />
+            @Html.ValidationMessageFor(model => model.lastName)
         </div>
 
         <div class="labelWithInput">
@@ -28,12 +31,15 @@
 
         <div class="labelWithInput">
             <label for="employeeNumber" class="propertyName">Employee Number</label>
-            <input type="text" name="employeeNumber" id="employeeNumber" value="" placeholder="Enter employee number" pattern="^T\d{3}$" title="Input must be in the format T followed by 3 digits. For example, T123."/>
+            <input type="text" name="employeeNumber" id="employeeNumber" value="" placeholder="Enter employee number" pattern="^T\d{3}$" title="Input must be in the format T followed by 3 digits. For example, T123." />
+            @Html.ValidationMessageFor(model => model.employeeNumber)
         </div>
 
         <div class="labelWithInput">
             <label for="salary" class="propertyName">Salary</label>
-            <input type="text" name="salary" id="salary" value="" placeholder="Enter salary" pattern="^\d+(\.\d{0,2})?$" title="Please enter a valid salary amount. Example: 50 or 50.12" required/>
+            <!--<input type="text" name="salary" id="salary" />-->
+            <input type="text" name="salary" id="salary" value="" placeholder="Enter salary" pattern="^\d+(\.\d{0,2})?$" title="Please enter a valid salary amount. Example: 50 or 50.12"/>
+            @Html.ValidationMessageFor(model => model.salary)
         </div>
 
         <button type="submit" class="button">Add</button>

@@ -10,7 +10,7 @@ namespace backend_web_dev_assignment3.Models
         public int teacherid;
         public string teacherfname;
         public string teacherlname;
-        public decimal salary;
+        public decimal? salary;
         public string employeenumber;
         public DateTime hiredate;
     }

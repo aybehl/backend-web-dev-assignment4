@@ -6,6 +6,7 @@ using System.Web;
 using System.Web.Mvc;
 using System.Xml.Linq;
 using System.Diagnostics;
+using backend_web_dev_assignment3.ViewModels;
 
 namespace backend_web_dev_assignment3.Controllers
 {
@@ -48,14 +49,39 @@ namespace backend_web_dev_assignment3.Controllers
 
         // POST: Teacher/Create
         [HttpPost]
-        public ActionResult Create(string firstName, string lastName, string employeeNumber, decimal salary, DateTime? hireDate = null)
+        public ActionResult Create(TeacherViewModel model)
         {
+           /* // Check for required fields
+            if (string.IsNullOrWhiteSpace(firstName))
+            {
+                ModelState.AddModelError("firstName", "Name is required.");
+            }
+
+            if (string.IsNullOrWhiteSpace(lastName))
+            {
+                ModelState.AddModelError("lastName", "Last Name is required.");
+            }
+
+            if (string.IsNullOrWhiteSpace(employeeNumber))
+            {
+                ModelState.AddModelError("employeeNumber", "Employee Number is required.");
+            }*/
+
+            // Additional validation logic can be added here
+
+            // Check if ModelState is valid
+            if (!ModelState.IsValid)
+            {
+                // Return to the view with the current ModelState (which includes errors)
+                return View("New", model);
+            }
+
             Teacher newTeacher = new Teacher();
-            newTeacher.teacherfname = firstName;
-            newTeacher.teacherlname = lastName;
-            newTeacher.employeenumber = employeeNumber;
-            newTeacher.hiredate = hireDate ?? DateTime.Now;
-            newTeacher.salary = salary;
+            newTeacher.teacherfname = model.firstName;
+            newTeacher.teacherlname = model.lastName;
+            newTeacher.employeenumber = model.employeeNumber;
+            newTeacher.hiredate = model.hireDate ?? DateTime.Now;
+            newTeacher.salary = model.salary;
 
             TeachersDataController controller = new TeachersDataController();
             controller.AddNewTeacher(newTeacher);
