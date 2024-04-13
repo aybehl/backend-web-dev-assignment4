@@ -7,6 +7,7 @@ using System.Web.Mvc;
 using System.Xml.Linq;
 using System.Diagnostics;
 using backend_web_dev_assignment3.ViewModels;
+//using System.Web.Http;
 
 namespace backend_web_dev_assignment3.Controllers
 {
@@ -85,6 +86,37 @@ namespace backend_web_dev_assignment3.Controllers
             controller.DeleteTeacher(id);
 
             return RedirectToAction("List");
+        }
+
+        //GET: /Teacher/Update/{id}
+        public ActionResult Update(int id) {
+            TeachersDataController controller = new TeachersDataController();
+            Teacher teacher = controller.GetTeacher(id);
+
+            return View(teacher);
+        }
+
+        //POST: /Teacher/Update/{id}
+        [HttpPost]
+        public ActionResult Update(int id, Teacher model)
+        {
+            // Check if ModelState is invalid
+            if (!ModelState.IsValid)
+            {
+                return RedirectToAction("Show/" + id);
+            }
+
+            TeachersDataController controller = new TeachersDataController();
+            Teacher teacherToUpdate = new Teacher();
+            teacherToUpdate.teacherfname = model.teacherfname;
+            teacherToUpdate.teacherlname = model.teacherlname;
+            teacherToUpdate.employeenumber = model.employeenumber;
+            teacherToUpdate.hiredate = model.hiredate;
+            teacherToUpdate.salary = model.salary;
+            teacherToUpdate.teacherid = id;
+
+            controller.UpdateTeacher(id, teacherToUpdate);
+            return RedirectToAction("Show/" + id);
         }
 
     }

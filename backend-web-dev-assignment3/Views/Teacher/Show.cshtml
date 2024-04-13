@@ -4,19 +4,6 @@
     ViewBag.Title = "Teacher Details";
 }
 
-<div class="linksContainer">
-    <div>
-        <span>To See All Teachers</span>
-        <a href="/Teacher/List" class="button">Click</a>
-    </div>
-
-    <div>
-        <span>Delete this Teacher</span>
-        <a href="/Teacher/ConfirmDelete/@Model.teacherid" class="button">Click</a>
-    </div>
-</div>
-
-
 <h2>Teacher Details</h2>
 
 <div>
@@ -25,6 +12,23 @@
     <div><span class="propertyName">Employee Number - </span>@Model.employeenumber</div>
     <div><span class="propertyName">Hire Date - </span>@Model.hiredate</div>
     <div><span class="propertyName">Salary - </span>@Model.salary</div>
+</div>
+
+<div class="linksContainer">
+    <div>
+        <span>To See All Teachers</span>
+        <a href="/Teacher/List" class="button">Click</a>
+    </div>
+
+    <div>
+        <span>Update this Teacher</span>
+        <a href="/Teacher/Update/@Model.teacherid" class="button">Click</a>
+    </div>
+
+    <div>
+        <span>Delete this Teacher</span>
+        <a href="/Teacher/ConfirmDelete/@Model.teacherid" class="button">Click</a>
+    </div>
 </div>
 
 

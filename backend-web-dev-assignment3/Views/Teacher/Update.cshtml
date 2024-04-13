@@ -1,0 +1,53 @@
+﻿@model backend_web_dev_assignment3.Models.Teacher
+@{
+    ViewBag.Title = "Update";
+    var hiredateValue = @Model.hiredate?.ToString("yyyy-MM-dd");
+}
+
+<div class="linksContainer">
+    <div>
+        <span>To See All Teachers</span>
+        <a href="/Teacher/List" class="button">Click</a>
+    </div>
+
+    <div>
+        <span>Back to Teacher</span>
+        <a href="/Teacher/Show/@Model.teacherid" class="button">Click</a>
+    </div>
+</div>
+
+<h2>Update a Teacher</h2>
+<div>
+    <form action="/Teacher/Update/@Model.teacherid" method="POST">
+        <div class="labelWithInput">
+            <label for="teacherfname" class="propertyName">First Name</label>
+            <input type="text" name="teacherfname" id="teacherfname" value="@Model.teacherfname" placeholder="Enter first name" required />
+            @Html.ValidationMessageFor(model => model.teacherfname)
+        </div>
+
+        <div class="labelWithInput">
+            <label for="teacherlname" class="propertyName">Last Name</label>
+            <input type="text" name="teacherlname" id="teacherlname" value="@Model.teacherlname" placeholder="Enter last name" required />
+            @Html.ValidationMessageFor(model => model.teacherlname)
+        </div>
+
+        <div class="labelWithInput">
+            <label for="hiredate" class="propertyName">Hire Date</label>
+            <input type="date" name="hiredate" id="hiredate" value=@hiredateValue />
+        </div>
+
+        <div class="labelWithInput">
+            <label for="employeenumber" class="propertyName">Employee Number</label>
+            <input type="text" name="employeenumber" id="employeenumber" value="@Model.employeenumber" placeholder="Enter employee number" pattern="^T\d{3}$" title="Input must be in the format T followed by 3 digits. For example, T123." />
+            @Html.ValidationMessageFor(model => model.employeenumber)
+        </div>
+
+        <div class="labelWithInput">
+            <label for="salary" class="propertyName">Salary</label>
+            <input type="text" name="salary" id="salary" value="@Model.salary" placeholder="Enter salary" pattern="^\d+(\.\d{0,2})?$" title="Please enter a valid salary amount. Example: 50 or 50.12" />
+            @Html.ValidationMessageFor(model => model.salary)
+        </div>
+
+        <button type="submit" class="button">Update</button>
+    </form>
+</div>

@@ -8,6 +8,8 @@ namespace backend_web_dev_assignment3.ViewModels
 {
     public class TeacherViewModel
     {
+        public int teacherid;
+
         [Required(ErrorMessage = "First name is required")]
         public string firstName { get; set; }
 

@@ -9,6 +9,7 @@ using System.Net;
 using System.Net.Http;
 using System.Web.Http;
 using System.Web.Http.Cors;
+using System.Diagnostics;
 
 namespace backend_web_dev_assignment3.Controllers
 {
@@ -235,7 +236,7 @@ namespace backend_web_dev_assignment3.Controllers
         /// <returns>void</returns>
         [HttpPost]
         [Route("api/teachersData/deleteTeacher")]
-        public void DeleteTeacher(int id)
+        public IHttpActionResult DeleteTeacher(int id)
         {
             MySqlConnection Conn = schoolDbContext.AccessDatabase();
             Conn.Open();
@@ -255,11 +256,72 @@ namespace backend_web_dev_assignment3.Controllers
                
                 transaction.Commit();
                 Conn.Close();
+                return Ok(new { message = "Teacher deleted successfully" });
             }
             catch(Exception ex) {
                 transaction.Rollback();
+                return InternalServerError(ex);
             }
             
         }
+
+        /// <summary>
+        /// This method will add a new teacher given as parameter the Teacher object
+        /// </summary>
+        /// <param name="newTeacher">Teacher Object containing all attributes in the Teacher model</param>
+        /// <example>
+        /// POST /api/TeachersData/addNewTeacher/ [Body - {"employeenumber": "T378", "hiredate": "2016-08-05T00:00:00", 
+        /// "salary": "55.30", "teacherfname": "Alexander", "teacherid": 1, "teacherlname": "Bennett"}] -> This adds a new 
+        /// teacher with the data from the body of the request to the Teachers Table
+        /// </example>
+        /// <returns>Status 200, if action is successful otherwise Internal Server Error - 500</returns>
+        [HttpPost]
+        [Route("api/teachersData/updateTeacher/{id}")]
+        //[EnableCors(origins: "*", methods: "*", headers: "*")]
+        public IHttpActionResult UpdateTeacher(int id, [FromBody] Teacher teacherToUpdate)
+        {
+            if (teacherToUpdate == null)
+            {
+                return BadRequest("Invalid input in the body for post request");
+            }
+
+            if (id != teacherToUpdate.teacherid)
+            {
+                return BadRequest("Mismatched ID in the request and model data.");
+            }
+
+            try
+            {
+                MySqlConnection Conn = schoolDbContext.AccessDatabase();
+                Conn.Open();
+
+                MySqlCommand cmd = Conn.CreateCommand();
+                cmd.CommandText = "UPDATE Teachers SET teacherfname = @firstName, teacherlname = @lastName, employeenumber = @employeeNumber, hiredate = @hireDate, salary = @salary WHERE teacherid = @id";
+                cmd.Parameters.AddWithValue("@firstName", teacherToUpdate.teacherfname);
+                cmd.Parameters.AddWithValue("@lastName", teacherToUpdate.teacherlname);
+                cmd.Parameters.AddWithValue("@employeeNumber", teacherToUpdate.employeenumber);
+                cmd.Parameters.AddWithValue("@hireDate", teacherToUpdate.hiredate);
+                cmd.Parameters.AddWithValue("@salary", teacherToUpdate.salary);
+                cmd.Parameters.AddWithValue("@id", teacherToUpdate.teacherid);
+
+                int rowsAffected = cmd.ExecuteNonQuery();
+                Conn.Close();
+
+                if (rowsAffected > 0)
+                {
+                    return Ok(new { message = "Teacher updated successfully" });
+                }
+                else
+                {
+                    var message = "Teacher with the specified ID was not found.";
+                    return ResponseMessage(Request.CreateErrorResponse(HttpStatusCode.NotFound, message));
+                }
+            }
+            catch (Exception ex)
+            {
+                return InternalServerError(ex);
+            }
+        }
+
     }
 }
