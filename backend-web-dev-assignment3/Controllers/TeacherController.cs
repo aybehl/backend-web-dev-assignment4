@@ -103,7 +103,7 @@ namespace backend_web_dev_assignment3.Controllers
             // Check if ModelState is invalid
             if (!ModelState.IsValid)
             {
-                return RedirectToAction("Show/" + id);
+                return View(model);
             }
 
             TeachersDataController controller = new TeachersDataController();

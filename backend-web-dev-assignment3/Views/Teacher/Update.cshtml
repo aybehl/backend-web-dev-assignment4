@@ -18,7 +18,7 @@
 
 <h2>Update a Teacher</h2>
 <div>
-    <form action="/Teacher/Update/@Model.teacherid" method="POST">
+    <form name="update_form" action="/Teacher/Update/@Model.teacherid" method="POST">
         <div class="labelWithInput">
             <label for="teacherfname" class="propertyName">First Name</label>
             <input type="text" name="teacherfname" id="teacherfname" value="@Model.teacherfname" placeholder="Enter first name" required />
@@ -51,3 +51,35 @@
         <button type="submit" class="button">Update</button>
     </form>
 </div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        var formHandle = document.forms.update_form;
+
+        formHandle.onsubmit = function (event) {
+            var isValid = true;
+            var firstNameInput = formHandle.teacherfname;
+            var lastNameInput = formHandle.teacherlname;
+
+            // Validate first name
+            if (firstNameInput.value.trim() === "") {
+                firstNameInput.style.background = "red";
+                isValid = false;  // Set form as invalid
+            } else {
+                firstNameInput.style.background = "";
+            }
+
+            // Validate last name
+            if (lastNameInput.value.trim() === "") {
+                lastNameInput.style.background = "red";
+                isValid = false;  // Set form as invalid
+            } else {
+                lastNameInput.style.background = "";
+            }
+
+            if (!isValid) {
+                event.preventDefault();  // Stop form submission
+            }
+        };
+    });
+</script>

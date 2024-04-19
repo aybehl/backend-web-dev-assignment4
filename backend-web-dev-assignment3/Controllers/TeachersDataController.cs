@@ -290,6 +290,12 @@ namespace backend_web_dev_assignment3.Controllers
                 return BadRequest("Mismatched ID in the request and model data.");
             }
 
+            if (!ModelState.IsValid)
+            {
+                var errors = ModelState.Values.SelectMany(v => v.Errors.Select(b => b.ErrorMessage));
+                return BadRequest("Validation error: " + string.Join(", ", errors));
+            }
+
             try
             {
                 MySqlConnection Conn = schoolDbContext.AccessDatabase();
