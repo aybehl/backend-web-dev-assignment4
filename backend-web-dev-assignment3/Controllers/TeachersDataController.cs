@@ -266,18 +266,19 @@ namespace backend_web_dev_assignment3.Controllers
         }
 
         /// <summary>
-        /// This method will add a new teacher given as parameter the Teacher object
+        /// This method will update an existing teacher given as parameter the teacher id. 
+        /// The body of the request consisting of the updated teacher object
         /// </summary>
-        /// <param name="newTeacher">Teacher Object containing all attributes in the Teacher model</param>
+        /// <param name="id">teacher id to uniquely identify a teacher</param>
         /// <example>
-        /// POST /api/TeachersData/addNewTeacher/ [Body - {"employeenumber": "T378", "hiredate": "2016-08-05T00:00:00", 
-        /// "salary": "55.30", "teacherfname": "Alexander", "teacherid": 1, "teacherlname": "Bennett"}] -> This adds a new 
+        /// POST /api/TeachersData/updateTeacher/ [Body - {"employeenumber": "T378", "hiredate": "2016-08-05T00:00:00", 
+        /// "salary": "55.30", "teacherfname": "Alexander", "teacherid": 1, "teacherlname": "Bennett"}] -> This updates an existing
         /// teacher with the data from the body of the request to the Teachers Table
         /// </example>
         /// <returns>Status 200, if action is successful otherwise Internal Server Error - 500</returns>
         [HttpPost]
         [Route("api/teachersData/updateTeacher/{id}")]
-        //[EnableCors(origins: "*", methods: "*", headers: "*")]
+        [EnableCors(origins: "*", methods: "*", headers: "*")]
         public IHttpActionResult UpdateTeacher(int id, [FromBody] Teacher teacherToUpdate)
         {
             if (teacherToUpdate == null)

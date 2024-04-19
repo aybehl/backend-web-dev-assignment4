@@ -31,7 +31,7 @@
 
         <div class="labelWithInput">
             <label for="employeeNumber" class="propertyName">Employee Number</label>
-            <input type="text" name="employeeNumber" id="employeeNumber" value="" placeholder="Enter employee number" pattern="^T\d{3}$" title="Input must be in the format T followed by 3 digits. For example, T123." />
+            <input type="text" name="employeeNumber" id="employeeNumber" value="" placeholder="Enter employee number" pattern="^T\d{3}$" title="Input must be in the format T followed by 3 digits. For example, T123." required/>
             @Html.ValidationMessageFor(model => model.employeeNumber)
         </div>
 
